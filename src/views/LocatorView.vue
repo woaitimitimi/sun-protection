@@ -56,14 +56,14 @@ const $router = useRouter()
 //
 const params = ref({
     location: '',
-    lat: -37.8142454,
-    lng: 144.9631732,
+    lat: 0,
+    lng: 0,
     alt: 100,
 })
 
 let uvParams = ref({
     uv: 0,
-    ux_max: 0,
+    uv_max: 0,
     tips: '',
 })
 //
@@ -112,7 +112,12 @@ const dataList = ref([
 ])
 
 let vchart = ref(null)
-let chartData = ref([])
+let chartData = ref([
+    {
+        type: 'Max',
+        value: 0,
+    },
+])
 
 //
 onMounted(async () => {
@@ -121,7 +126,13 @@ onMounted(async () => {
 //
 const getLocation = async () => {
     if (!params.value.location) {
-        getUv()
+        chartData.value = [
+            {
+                type: 'Max',
+                value: 0,
+            },
+        ]
+        draw()
         return
     }
     fetch(
@@ -142,7 +153,7 @@ const getLocation = async () => {
 }
 //
 const getUv = async () => {
-    const apiKey = 'openuv-h8j7rm84fjsu1-io'
+    const apiKey = 'openuv-1dq31m5rm8dkyom2-io'
     console.log(params.value.lat)
 
     const lat = params.value.lat
